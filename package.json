@@ -2,8 +2,8 @@
   "name": "example-javascript-yarn",
   "version": "0.0.1",
   "private": true,
-  "author": "bomly <hello@bomly.com>",
-  "description": "A node project to demostrate bomly scans for Yarn Repo",
+  "author": "bomly",
+  "description": "A node project to demonstrate bomly scans for Yarn projects",
   "dependencies": {
     "@google-cloud/vision": "0.8.0",
     "jquery": "3.0.0-alpha1",
@@ -15,5 +15,8 @@
     "nodejs-repo-tools": "git+https://github.com/GoogleCloudPlatform/nodejs-repo-tools.git#bbbb6035d77671eb053dbe6b6f0e3ff983f79639",
     "cookie-signature": "1.0.2",
     "handlebars-ex": "0.0.2"
+  },
+  "devDependencies": {
+    "mocha": "^3.5.3"
   }
 }
