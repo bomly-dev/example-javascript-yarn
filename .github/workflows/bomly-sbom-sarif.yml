@@ -1,0 +1,44 @@
+name: Bomly SBOM and SARIF
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Install Bomly
+        run: |
+          curl -fsSL https://bomly.dev/install.sh | BOMLY_VERSION=v0.16.2 sh
+
+      - name: Generate SBOMs and SARIF
+        run: |
+          bomly scan --enrich --audit \
+            --format sarif \
+            -o spdx=sbom.spdx.json \
+            -o cyclonedx=sbom.cdx.json \
+            > bomly.sarif
+
+      - name: Upload SARIF
+        if: success() || failure()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: bomly.sarif
+
+      - name: Upload SBOM artifacts
+        if: success() || failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: |
+            sbom.spdx.json
+            sbom.cdx.json
